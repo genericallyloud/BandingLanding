@@ -8,5 +8,8 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/objectify-3.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.restlet.ext.servlet.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.restlet.jar"/>
+	<classpathentry kind="lib" path="/Users/russ/Documents/workspace/BandingLanding/war/WEB-INF/lib/org.codehaus.jackson.core.jar"/>
+	<classpathentry kind="lib" path="/Users/russ/Documents/workspace/BandingLanding/war/WEB-INF/lib/org.codehaus.jackson.mapper.jar"/>
+	<classpathentry kind="lib" path="/Users/russ/Documents/workspace/BandingLanding/war/WEB-INF/lib/org.restlet.ext.jackson.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

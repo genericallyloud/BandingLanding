@@ -17,6 +17,7 @@ public class RestApi extends Application {
 
         // Defines only one route
         router.attach("/hello",HelloWorldResource.class);
+        router.attach("/upload-card",CardUploadResource.class);
 
         return router;
     }

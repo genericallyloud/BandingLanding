@@ -20,7 +20,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<!-- Catch all requests -->
 	<servlet-mapping>
 		<servlet-name>RestletServlet</servlet-name>
-		<url-pattern>/resources/*</url-pattern>
+		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
