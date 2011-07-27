@@ -1,0 +1,114 @@
+struct Card(
+	name:String,
+	cost:Int,
+	color:CardColor,
+	type:CardType,
+	power:Int,
+	toughness:Int,
+	cardText:String,
+	image:Image)
+	
+facet CardColor
+	= Land
+	| Artifact
+	| Black
+	| Blue
+	| Green
+	| Red
+	| White
+	| Gold
+
+facet CardType
+	= Land
+	| Permanent
+	| NonPermanent
+	
+schema CardUpload = {
+	name,types,text,flavorText,powerToughness,rarity,expansion,cardNumber,artist,cost,color,imageData
+}
+facet CardUploadType
+	= NotAuthenticated //should this just be a 401? probably
+	| AddNoUpload
+	| AlreadyAdded
+	| UploadAndAdd
+	
+
+//Chrome extension services
+ - Add card: CardName, deckId
+ - Upload and Add card: Card data, deckId, must be logged into google
+GET /check-card?cardName="<card name>" -> CardUploadType
+POST /add-card?cardName="<card name>" -> CardUploadType
+POST /upload-card (CardUpload json) -> CardUploadType
+
+
+
+//Internal tool
+ - Deck services:
+	- Create (name)
+	- Destroy (deck id)
+	- Change Card count (cardId, deckId, newCount)
+POST /deck (Deck json with just the name) -> Deck
+DELETE /deck/{deckId}
+PUT /deck/{deckId} (updated deck - remove cards, update counts)
+
+	
+ - Start Game: POST to /game, results in redirect
+POST /game -> redirect to /game/{id}
+ - Join Game: GET to /game/{id} - loads up single page interface, start script starts a channel to server, also loads up
+	all resources etc.
+	
+//In game services - I think it will all go here, which I know isn't very restful, but kind of simplifies things
+POST /game/{id}/{action}
+facet GameAction
+	//Card actions
+	= Move(cardId,location:LocationType)
+	| Attach(cardId,toCardId)
+	| Tap(cardId)
+	
+	//card counters
+	| AddCardCounter(cardId,counterName)
+	| RemoveCardCounter(cardId,counterName)
+	| IncrementCardCounter(cardId,counterName)
+	| DecrementCardCounter(cardId,counterName)
+	
+	//card note
+	| SetCardNote(cardId,noteText)
+	| RemoveCardNote(cardId,noteText)
+	
+	//Deck related
+	| Draw
+	| Shuffle
+	| TopCardVisible
+	
+	//Hand 
+	| MakeHandVisible
+	| TakeRandomCard //this sort of assumes random from opponent hand
+	
+	//Player
+	| IncrementLife
+	| DecrementLife
+	| UpdateLife(newLife)
+	
+	//player counters
+	| AddPlayerCounter(cardId,counterName)
+	| RemovePlayerCounter(cardId,counterName)
+	| IncrementPlayerCounter(cardId,counterName)
+	| DecrementPlayerCounter(cardId,counterName)
+	
+facet LocationType
+	= Hand
+	| LibraryTop
+	| LibraryBottom (not sure how to do this with touch, could be an action on deck popover, move top card to bottom)
+	| Graveyard
+	| Play
+	| PlayFaceDown
+	| Exile
+	| Pile
+	| OpponentHand
+	| OpponentPlay
+	| OpponentPile
+
+
+//services that don't make sense as action
+//view deck
+GET /game/{id}/deck/{id} //returns a listing usable for searching, just use Move action to take it
