@@ -2,7 +2,7 @@ package com.bandinglanding.model;
 
 import java.io.Serializable;
 
-public class CardUpload implements Serializable{
+public class CardUpload implements Serializable, CardDefinition{
 	/**
 	 * 
 	 */
@@ -14,8 +14,7 @@ public class CardUpload implements Serializable{
 	private String types;
 	private String text;
 	private String flavorText;
-	private int power;
-	private int toughness;
+	private String powerToughness;
 	
 	private boolean land;
 	private boolean creature;
@@ -34,62 +33,6 @@ public class CardUpload implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public String getFlavorText() {
-		return flavorText;
-	}
-
-	public void setFlavorText(String flavorText) {
-		this.flavorText = flavorText;
-	}
-
-	public boolean isLand() {
-		return land;
-	}
-
-	public void setLand(boolean land) {
-		this.land = land;
-	}
-
-	public boolean isCreature() {
-		return creature;
-	}
-
-	public void setCreature(boolean creature) {
-		this.creature = creature;
-	}
-
-	public boolean isPermanent() {
-		return permanent;
-	}
-
-	public void setPermanent(boolean permanent) {
-		this.permanent = permanent;
-	}
-
-	public int getPower() {
-		return power;
-	}
-
-	public void setPower(int power) {
-		this.power = power;
-	}
-
-	public int getToughness() {
-		return toughness;
-	}
-
-	public void setToughness(int toughness) {
-		this.toughness = toughness;
 	}
 
 	public CardColor getColor() {
@@ -114,6 +57,47 @@ public class CardUpload implements Serializable{
 
 	public void setTypes(String types) {
 		this.types = types;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public String getFlavorText() {
+		return flavorText;
+	}
+
+	public void setFlavorText(String flavorText) {
+		this.flavorText = flavorText;
+	}
+
+
+	public boolean isLand() {
+		return land;
+	}
+
+	public void setLand(boolean land) {
+		this.land = land;
+	}
+
+	public boolean isCreature() {
+		return creature;
+	}
+
+	public void setCreature(boolean creature) {
+		this.creature = creature;
+	}
+
+	public boolean isPermanent() {
+		return permanent;
+	}
+
+	public void setPermanent(boolean permanent) {
+		this.permanent = permanent;
 	}
 
 	public String getRarity() {
@@ -155,6 +139,18 @@ public class CardUpload implements Serializable{
 	public void setImageData(byte[] imageData) {
 		this.imageData = imageData;
 	}
+
+	@Override
+	public String getPowerToughness() {
+		return powerToughness;
+	}
+
+	@Override
+	public void setPowerToughness(String powerToughness) {
+		this.powerToughness = powerToughness;
+	}
+	
+	
 	
 	
 }

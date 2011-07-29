@@ -30,7 +30,7 @@ import com.googlecode.objectify.ObjectifyService;
  * Resource which has only one representation.
  * 
  */
-public class CardUploadResource extends ServerResource {
+public class DeckResource extends ServerResource {
 	
 	/**@throws IOException 
 	 * @Override
