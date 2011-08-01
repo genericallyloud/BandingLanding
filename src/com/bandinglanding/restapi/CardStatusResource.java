@@ -11,9 +11,12 @@ import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
+import com.bandinglanding.dto.CardStatusDto;
 import com.bandinglanding.model.Card;
+import com.bandinglanding.model.CardStatus;
 import com.bandinglanding.model.CardUpload;
 import com.bandinglanding.model.Deck;
+import com.bandinglanding.model.DeckCard;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
@@ -34,23 +37,32 @@ import com.googlecode.objectify.ObjectifyService;
  * Resource which has only one representation.
  * 
  */
-public class DeckResource extends ServerResource {
-	
-	/**@throws IOException 
-	 * @Override
-	protected Representation post(Representation entity)
-			throws ResourceException {
-		return new StringRepresentation("matched something");
-	}*/
+public class CardStatusResource extends ServerResource {
 	
 	@Get
-	public Deck find(){
-		UserService userService = UserServiceFactory.getUserService();
-    	User currUser = userService.getCurrentUser();
+	public CardStatusDto checkStatus(){
+
+		String cardName = getReference().getQueryAsForm().getFirstValue("cardName");
+
     	Objectify ofy = ObjectifyService.begin();
 
-    	return ofy.query(Deck.class).filter("deckOwner", currUser).get();
+    	Card card = ofy.query(Card.class).filter("name", cardName).get();
+    	if(card == null){
+    		return new CardStatusDto(CardStatus.UPLOAD_AND_ADD);
+    	}
+    	
+    	UserService userService = UserServiceFactory.getUserService();
+    	User currUser = userService.getCurrentUser();
+    	Deck deck = ofy.query(Deck.class).filter("deckOwner", currUser).get();
+    	if(deck == null){
+    		return new CardStatusDto(CardStatus.ADD_NO_UPLOAD);
+    	}
+    	DeckCard matchingCard = ofy.query(DeckCard.class).ancestor(deck).filter("card", card).get();
+    	if(matchingCard == null){
+    		return new CardStatusDto(CardStatus.ADD_NO_UPLOAD);
+    	}else{
+    		return new CardStatusDto(matchingCard);
+    	}
 		
 	}
-
 }

@@ -13,6 +13,8 @@ import org.restlet.resource.ServerResource;
 
 import com.bandinglanding.model.Card;
 import com.bandinglanding.model.CardUpload;
+import com.bandinglanding.model.Deck;
+import com.bandinglanding.model.DeckCard;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
@@ -22,6 +24,9 @@ import com.google.appengine.api.files.FileServiceFactory;
 import com.google.appengine.api.files.FileWriteChannel;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
@@ -51,6 +56,22 @@ public class CardUploadResource extends ServerResource {
  
     @Post("json")
     public String upload(CardUpload cardUpload) throws IOException {
+    	UserService userService = UserServiceFactory.getUserService();
+    	User currUser = userService.getCurrentUser();
+    	if(currUser == null){
+    		return "Not logged in";
+    	}
+
+    	Objectify ofy = ObjectifyService.begin();
+
+    	Deck deck = ofy.query(Deck.class).filter("deckOwner", currUser).get();
+    	if(deck == null){
+    		//need to create and store a new deck
+    		deck = new Deck();
+    		deck.setDeckOwner(currUser);
+    		ofy.put(deck);
+    	}
+    	
     	Card card = new Card(cardUpload);
     	// Get a file service
     	FileService fileService = FileServiceFactory.getFileService();
@@ -76,8 +97,10 @@ public class CardUploadResource extends ServerResource {
     	card.setImage(blobKey);
     	card.setImageUrl(url);
     	
-    	Objectify ofy = ObjectifyService.begin();
     	Key<Card> cardKey = ofy.put(card);
+    	DeckCard deckCard = new DeckCard(deck, card);
+    	ofy.put(deckCard);
+    	
     	
         return url + " " + cardKey.toString();
     }
