@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Id;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.google.appengine.api.users.User;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Parent;
@@ -34,12 +36,14 @@ public class DeckCard implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
+	@JsonIgnore
 	public Key<Deck> getDeck() {
 		return deck;
 	}
 	public void setDeck(Key<Deck> deck) {
 		this.deck = deck;
 	}
+	@JsonIgnore
 	public Key<Card> getCard() {
 		return card;
 	}

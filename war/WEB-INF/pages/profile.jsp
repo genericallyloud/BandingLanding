@@ -1,19 +1,36 @@
-<%@ page language="java" contentType="text/html" %>
-<%@ page import="java.util.*" %>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
-Your deck, sir:
-<ul>
-	<c:forEach var="deckCard" items="${deckCards}">
-		<li><c:out value="${deckCard.cardName}" /></li>
-     </c:forEach>
-</ul>
-</body>
-</html>
+<!DOCTYPE html> 
+<html> 
+ 
+  <head> 
+    <title>Backbone Demo: Todos</title> 
+    <link href="/css/deckbuilder.css" media="all" rel="stylesheet" type="text/css"/>
+  </head> 
+ 
+  <body> 
+ 
+    <h1>Your deck, sir:</h1> 
+	<div id="deck"> 
+		<ul id="card-list"></ul> 
+    </div>
+    
+    <!-- Templates --> 
+ 
+    <script type="text/template" id="card-template">
+		<div class="card">
+			<span class="remove-card">x</span>
+			<span class="card-title">{{cardName}}</span>
+			<input class="card-count" type="number" min="0" max="100" value="{{count}}"/>
+		</div>
+    </script>
+    <script src="/js/jquery-1.6.2.min.js"></script> 
+    <script src="/js/underscore.js"></script> 
+    <script src="/js/backbone.js"></script>
+    <script>
+    	var initialCardList = <%= request.getAttribute("deckListJson") %>;
+    </script>
+    <script src="/js/deckbuilder.js"></script>
+    
+  </body> 
+ 
+</html> 
