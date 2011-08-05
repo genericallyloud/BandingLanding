@@ -9,6 +9,8 @@ public class UserWhitelist {
 	private static final List<String> WHITELIST = new ArrayList<String>();
 	static {
 		WHITELIST.add("russell.leggett@gmail.com");
+		WHITELIST.add("edgiza@gmail.com");
+		WHITELIST.add("jgiza4@gmail.com");
 	}
 	
 	public static boolean isListed(User user){

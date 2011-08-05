@@ -8,7 +8,7 @@ public class CardUpload implements Serializable, CardDefinition{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String name;
+	private String name; //if only adding, not uploading, this will be the only field supplied
 	private CardColor color;
 	private int cost;
 	private String types;

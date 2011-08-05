@@ -42,7 +42,7 @@ $(function(){
   window.CardView = Backbone.View.extend({
 
     //... is a list tag.
-    tagName:  "li",
+    tagName:  "tr",
 
     // Cache the template function for a single item.
     template: _.template($('#card-template').html()),

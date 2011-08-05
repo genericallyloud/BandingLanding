@@ -11,7 +11,9 @@ import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
+import com.bandinglanding.dto.CardStatusDto;
 import com.bandinglanding.model.Card;
+import com.bandinglanding.model.CardStatus;
 import com.bandinglanding.model.CardUpload;
 import com.bandinglanding.model.Deck;
 import com.bandinglanding.model.DeckCard;
@@ -55,12 +57,9 @@ public class CardUploadResource extends ServerResource {
 	}
  
     @Post("json")
-    public String upload(CardUpload cardUpload) throws IOException {
+    public CardStatusDto upload(CardUpload cardUpload) throws IOException {
     	UserService userService = UserServiceFactory.getUserService();
     	User currUser = userService.getCurrentUser();
-    	if(currUser == null){
-    		return "Not logged in";
-    	}
 
     	Objectify ofy = ObjectifyService.begin();
 
@@ -71,38 +70,47 @@ public class CardUploadResource extends ServerResource {
     		deck.setDeckOwner(currUser);
     		ofy.put(deck);
     	}
+
+    	Card card = ofy.query(Card.class).filter("name", cardUpload.getName()).get();
+    	if(card == null){
+    		//card doesn't exist, this upload should be complete with data
+    		card = new Card(cardUpload);
+        	// Get a file service
+        	FileService fileService = FileServiceFactory.getFileService();
+
+        	// Create a new Blob file with mime-type "image/jpeg"
+        	AppEngineFile file = fileService.createNewBlobFile("image/jpeg");
+
+
+        	// This time lock because we intend to finalize
+        	boolean lock = true;
+        	FileWriteChannel writeChannel = fileService.openWriteChannel(file, lock);
+
+        	// This time we write to the channel using standard Java
+        	writeChannel.write(ByteBuffer.wrap(cardUpload.getImageData()));
+
+        	// Now finalize
+        	writeChannel.closeFinally();
+
+        	// Now read from the file using the Blobstore API
+        	BlobKey blobKey = fileService.getBlobKey(file);
+        	ImagesService imagesService = ImagesServiceFactory.getImagesService();
+        	String url = imagesService.getServingUrl(blobKey);
+        	card.setImage(blobKey);
+        	card.setImageUrl(url);
+        	ofy.put(card);
+    	}
     	
-    	Card card = new Card(cardUpload);
-    	// Get a file service
-    	FileService fileService = FileServiceFactory.getFileService();
-
-    	// Create a new Blob file with mime-type "image/jpeg"
-    	AppEngineFile file = fileService.createNewBlobFile("image/jpeg");
-
-
-    	// This time lock because we intend to finalize
-    	boolean lock = true;
-    	FileWriteChannel writeChannel = fileService.openWriteChannel(file, lock);
-
-    	// This time we write to the channel using standard Java
-    	writeChannel.write(ByteBuffer.wrap(cardUpload.getImageData()));
-
-    	// Now finalize
-    	writeChannel.closeFinally();
-
-    	// Now read from the file using the Blobstore API
-    	BlobKey blobKey = fileService.getBlobKey(file);
-    	ImagesService imagesService = ImagesServiceFactory.getImagesService();
-    	String url = imagesService.getServingUrl(blobKey);
-    	card.setImage(blobKey);
-    	card.setImageUrl(url);
-    	
-    	Key<Card> cardKey = ofy.put(card);
-    	DeckCard deckCard = new DeckCard(deck, card);
+    	//now check for the deckCard - it may already exist, otherwise create one
+    	DeckCard deckCard = ofy.query(DeckCard.class).ancestor(deck).filter("card", card).get();
+    	if(deckCard == null){
+    		deckCard = new DeckCard(deck, card);
+    	}
+    	deckCard.incrementCount();
     	ofy.put(deckCard);
     	
     	
-        return url + " " + cardKey.toString();
+        return new CardStatusDto(deckCard);
     }
 
 }

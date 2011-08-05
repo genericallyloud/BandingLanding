@@ -1,6 +1,10 @@
 html,body{
 	margin:0;
 }
+body{
+	background:#66FFFF url(pwp2.jpg) repeat-x repeat-y;
+}
+
 .header{
 	background-color:#666;
 	text-align:right;
@@ -16,15 +20,12 @@ a:link,a:hover,a:visited{
 a:hover{
 	text-decoration: underline;
 }
-.remove-card{
-	display:inline-block;
-	height:12px;
-	width:12px;
-	background: transparent url(/img/remove-card.png) no-repeat;
+.content-container{
+	margin:0 auto;
+	width:980px;
 }
-.remove-card:hover{
-	background-image: url(/img/remove-card-hover.png)
-}
-.card-count{
-	width:40px;
+#awesome{
+	margin-top:20px;
+	height:670px;
+	background:transparent url(/img/banding-landing.jpg) no-repeat;
 }

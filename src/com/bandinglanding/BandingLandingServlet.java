@@ -72,10 +72,13 @@ public class BandingLandingServlet extends HttpServlet {
                         "\">sign out</a> to try as someone else.</p>");
         	}
         } else {
-            response.setContentType("text/html");
-            response.getWriter().println("<p>Please <a href=\"" +
-                                         userService.createLoginURL(thisURL) +
-                                         "\">sign in</a>.</p>");
+            request.setAttribute("signinUrl", userService.createLoginURL(thisURL));
+            try {
+        		String destination = "/WEB-INF/pages/public.jsp";
+    			request.getRequestDispatcher(destination).forward(request, response);
+			} catch (ServletException e) {
+				e.printStackTrace();
+			}
         }
 	}
 }

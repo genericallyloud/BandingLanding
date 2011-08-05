@@ -27,7 +27,7 @@ public class DeckCard implements Serializable{
 		this.deck = new Key<Deck>(Deck.class,deck.getId());
 		this.card = new Key<Card>(Card.class,card.getId());
 		this.cardName = card.getName();
-		this.count = 1;
+		this.count = 0;
 	}
 	
 	public Long getId() {
@@ -61,6 +61,14 @@ public class DeckCard implements Serializable{
 	}
 	public void setCount(int count) {
 		this.count = count;
+	}
+
+	public void incrementCount() {
+		this.count++;
+	}
+	
+	public void decrementCount() {
+		this.count--;
 	}
 	
 }
