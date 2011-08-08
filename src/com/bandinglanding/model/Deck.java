@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Id;
 
+import com.bandinglanding.dto.DeckDto;
 import com.google.appengine.api.users.User;
 
 public class Deck implements Serializable{

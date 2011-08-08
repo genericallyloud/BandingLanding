@@ -11,6 +11,9 @@ import javax.servlet.http.*;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.bandinglanding.dao.DeckCardDao;
+import com.bandinglanding.dao.DeckDao;
+import com.bandinglanding.dto.DeckDto;
 import com.bandinglanding.model.Card;
 import com.bandinglanding.model.Deck;
 import com.bandinglanding.model.DeckCard;
@@ -41,22 +44,9 @@ public class BandingLandingServlet extends HttpServlet {
         		request.setAttribute("signoutUrl", userService.createLogoutURL(thisURL));
         		
         		//grab the user's deck
-            	Objectify ofy = ObjectifyService.begin();
-            	Deck deck = ofy.query(Deck.class).filter("deckOwner", currUser).get();
-            	if(deck == null){
-            		//if no deck, make one
-            		deck = new Deck();
-            		deck.setDeckOwner(currUser);
-            		ofy.put(deck);
-            	}
-            	
-            	Query<DeckCard> deckCards = ofy.query(DeckCard.class).ancestor(deck);
-            	List<DeckCard> cards = new ArrayList<DeckCard>();
-            	for(DeckCard c : deckCards){
-            		cards.add(c);
-            	}
-            	String deckListJson = new ObjectMapper().writeValueAsString(cards);
-        		request.setAttribute("deckListJson", deckListJson);
+            	Deck deck = new DeckDao().findOrCreateDefaultByOwner(currUser);
+            	DeckDto deckDto = new DeckDto(deck);
+        		request.setAttribute("deckDtoJson", deckDto);
         		try {
             		String destination = "/WEB-INF/pages/profile.jsp";
         			request.getRequestDispatcher(destination).forward(request, response);

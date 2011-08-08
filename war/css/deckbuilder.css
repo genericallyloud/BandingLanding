@@ -9,12 +9,15 @@ html,body{
 .nav-container{
 	padding:4px 10px;
 }
-a:link,a:hover,a:visited{
+.header a:link,.header a:hover,.header a:visited{
 	color:#fff;
 	text-decoration: none;
 }
-a:hover{
+.header a:hover{
 	text-decoration: underline;
+}
+a.card-name:link,a.card-name:hover,a.card-name:visited{
+	color:#1c94c4;
 }
 .remove-card{
 	display:inline-block;

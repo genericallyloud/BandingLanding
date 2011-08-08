@@ -11,6 +11,7 @@ import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
+import com.bandinglanding.dao.DeckDao;
 import com.bandinglanding.dto.CardStatusDto;
 import com.bandinglanding.model.Card;
 import com.bandinglanding.model.CardStatus;
@@ -53,7 +54,7 @@ public class CardStatusResource extends ServerResource {
     	
     	UserService userService = UserServiceFactory.getUserService();
     	User currUser = userService.getCurrentUser();
-    	Deck deck = ofy.query(Deck.class).filter("deckOwner", currUser).get();
+    	Deck deck = new DeckDao().findDefaultByOwner(currUser);
     	if(deck == null){
     		return new CardStatusDto(CardStatus.ADD_NO_UPLOAD);
     	}

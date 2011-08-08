@@ -13,6 +13,8 @@ import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
+import com.bandinglanding.dao.DeckCardDao;
+import com.bandinglanding.dao.DeckDao;
 import com.bandinglanding.dto.CardStatusDto;
 import com.bandinglanding.model.Card;
 import com.bandinglanding.model.CardStatus;
@@ -46,13 +48,11 @@ public class DeckCardResource extends ServerResource {
 		String idString = (String) getRequestAttributes().get("id");
 		long deckCardId = Long.parseLong(idString);
 		Objectify ofy = ObjectifyService.begin();
-		UserService userService = UserServiceFactory.getUserService();
-    	User currUser = userService.getCurrentUser();
-    	Key<Deck> deck = ofy.query(Deck.class).filter("deckOwner", currUser).getKey();
+    	Key<Deck> deck = new DeckDao().findDefaultKeyForCurrentUser();
     	if(deck == null){
     		return "No Deck!";
     	}
-    	DeckCard fetched = ofy.get(new Key<DeckCard>(deck,DeckCard.class,deckCardId));
+    	DeckCard fetched = new DeckCardDao().find(deck, deckCardId);
 		if(fetched != null){
 			ofy.delete(fetched);
 			return "Deleted!";
@@ -68,13 +68,11 @@ public class DeckCardResource extends ServerResource {
 		long deckCardId = Long.parseLong(idString);
 		Objectify ofy = ObjectifyService.begin();
 		
-		UserService userService = UserServiceFactory.getUserService();
-    	User currUser = userService.getCurrentUser();
-    	Key<Deck> deck = ofy.query(Deck.class).filter("deckOwner", currUser).getKey();
+    	Key<Deck> deck = new DeckDao().findDefaultKeyForCurrentUser();
     	if(deck == null){
     		return "No Deck!";
     	}
-    	DeckCard fetched = ofy.get(new Key<DeckCard>(deck,DeckCard.class,deckCardId));
+    	DeckCard fetched = new DeckCardDao().find(deck, deckCardId);
 		if(fetched != null){
 			fetched.setCount(deckCard.getCount());
 			ofy.put(fetched);

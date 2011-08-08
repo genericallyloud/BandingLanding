@@ -13,8 +13,6 @@ public class ObjectifySetup {
 
 	    	//set up objectify
 	    	ObjectifyService.register(Card.class);
-	    	ObjectifyService.register(Deck.class);
-	    	ObjectifyService.register(DeckCard.class);
 		}
 	}
 }

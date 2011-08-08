@@ -11,6 +11,7 @@ import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
+import com.bandinglanding.dao.DeckDao;
 import com.bandinglanding.dto.CardStatusDto;
 import com.bandinglanding.model.Card;
 import com.bandinglanding.model.CardStatus;
@@ -58,19 +59,9 @@ public class CardUploadResource extends ServerResource {
  
     @Post("json")
     public CardStatusDto upload(CardUpload cardUpload) throws IOException {
-    	UserService userService = UserServiceFactory.getUserService();
-    	User currUser = userService.getCurrentUser();
-
+    	Deck deck = new DeckDao().findOrCreateDefaultForCurrentUser();
+    	
     	Objectify ofy = ObjectifyService.begin();
-
-    	Deck deck = ofy.query(Deck.class).filter("deckOwner", currUser).get();
-    	if(deck == null){
-    		//need to create and store a new deck
-    		deck = new Deck();
-    		deck.setDeckOwner(currUser);
-    		ofy.put(deck);
-    	}
-
     	Card card = ofy.query(Card.class).filter("name", cardUpload.getName()).get();
     	if(card == null){
     		//card doesn't exist, this upload should be complete with data
