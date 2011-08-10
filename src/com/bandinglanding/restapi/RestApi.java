@@ -34,6 +34,9 @@ public class RestApi extends Application {
         router.attach("/deck/{id}",DeckResource.class);
         router.attach("/deck",DeckResource.class);
 
+        router.attach("/game/{id}",GameResource.class);
+        router.attach("/game",GameResource.class);
+        
         //put in authentication layer
         AuthFilter auth = new AuthFilter(getContext());
         auth.setNext(router);

@@ -15,14 +15,12 @@ public class Player implements Serializable{
 	@Id private Long id;
 	private Key<Game> game;
 	private User user;
-	private Key<Deck> deck;
-	private int life;
+	private int life = 20;
 	
 	public Player() {}
 	
 	public Player(Key<Game> game, Deck deck) {
 		this.game = game;
-		this.deck = new Key<Deck>(Deck.class,deck.getId());
 		this.user = deck.getDeckOwner();
 	}
 	public Long getId() {
@@ -42,14 +40,6 @@ public class Player implements Serializable{
 	}
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public Key<Deck> getDeck() {
-		return deck;
-	}
-
-	public void setDeck(Key<Deck> deck) {
-		this.deck = deck;
 	}
 
 	public int getLife() {

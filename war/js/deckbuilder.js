@@ -77,7 +77,9 @@
 		
 		//start a new game
 		$("#start-game").click(function(){
-			
+			$.post("/rest/game", function(result){
+				console.log(JSON.parse(result));
+			});
 		});
 	});
 })(jQuery);
