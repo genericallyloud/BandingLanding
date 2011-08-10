@@ -14,6 +14,7 @@
  	<div class="header">
 	  	<div class="content-container">
 		 	<div class="nav-container">
+			 	<a href="#" id="start-game">Start a Game</a> |
 			 	<a href="/AddToDeck.crx">Download Extension</a> |
 			 	<a href="<%= request.getAttribute("signoutUrl") %>">Sign Out</a>
 			</div>

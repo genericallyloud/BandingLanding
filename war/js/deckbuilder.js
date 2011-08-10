@@ -74,5 +74,10 @@
 			//alert("Deleting " + data.card.name);
 			return false;
 		});
+		
+		//start a new game
+		$("#start-game").click(function(){
+			
+		});
 	});
 })(jQuery);

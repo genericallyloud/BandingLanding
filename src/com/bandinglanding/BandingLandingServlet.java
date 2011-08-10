@@ -36,7 +36,7 @@ public class BandingLandingServlet extends HttpServlet {
 			throws IOException {
 		UserService userService = UserServiceFactory.getUserService();
 
-        String thisURL = request.getRequestURI();
+        String thisURL = "/";
 
         if (request.getUserPrincipal() != null) {
         	User currUser = userService.getCurrentUser();
