@@ -11,7 +11,9 @@ import com.bandinglanding.dto.DeckCardListingDto;
 import com.bandinglanding.model.Deck;
 import com.bandinglanding.model.Game;
 import com.bandinglanding.model.GameCard;
+import com.bandinglanding.model.GameCardLocation;
 import com.bandinglanding.model.Player;
+import com.google.appengine.api.datastore.QueryResultIterable;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
@@ -51,6 +53,15 @@ public class GameCardDao extends DAOBase {
 		}
 		ofy().put(library);
 		
+		return library;
+	}
+
+	public List<GameCard> findLibrary(Key<Player> controller) {
+		QueryResultIterable<GameCard> libQuery = ofy().query(GameCard.class).filter("controller", controller).filter("location", GameCardLocation.LIBRARY).fetch();
+		List<GameCard> library = new ArrayList<GameCard>();
+		for(GameCard gc : libQuery){
+			library.add(gc);
+		}
 		return library;
 	}
 }

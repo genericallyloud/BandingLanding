@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Id;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.google.appengine.api.blobstore.BlobKey;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Parent;
@@ -14,7 +16,7 @@ public class GameCard implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id private Long id;
-	@Parent private Key<Player> controller;
+	private Key<Player> controller;
 	private GameCardLocation location = GameCardLocation.LIBRARY;
 	private int index;
 	
@@ -51,6 +53,7 @@ public class GameCard implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
+	@JsonIgnore
 	public Key<Player> getController() {
 		return controller;
 	}

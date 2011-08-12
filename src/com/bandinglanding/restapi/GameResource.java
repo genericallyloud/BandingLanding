@@ -24,7 +24,7 @@ public class GameResource extends ServerResource {
 	@Get
 	public GameDto find(){
 		String idString = (String) getRequestAttributes().get("id");
-		if(idString == null){
+		if(idString != null){
 			long gameId = Long.parseLong(idString);
 			Key<Game> gameKey = new Key<Game>(Game.class,gameId);
 			Player p = new PlayerDao().findForCurrentUser(gameKey);
@@ -36,7 +36,12 @@ public class GameResource extends ServerResource {
 	
 	@Post("json")
 	public Game createGame(Deck deck){
-		Deck fetched = new DeckDao().find(deck.getId());
+		Deck fetched;
+		if(deck==null){
+			fetched = new DeckDao().findDefaultForCurrentUser();
+		}else{
+			fetched = new DeckDao().find(deck.getId());
+		}
 		return new GameDao().create(fetched);
 	}
 

@@ -13,4 +13,5 @@ public class OpponentDto {
 	public OpponentDto(Player player){
 		this.player = player;
 	}
+	
 }

@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Id;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.google.appengine.api.users.User;
 import com.googlecode.objectify.Key;
 
@@ -29,6 +31,7 @@ public class Player implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
+	@JsonIgnore
 	public Key<Game> getGame() {
 		return game;
 	}
