@@ -27,6 +27,7 @@
 		</div>
 	</div>
 	<div id="card-viewer"></div>
+	<div id="game-ready">Your game is ready. <a href="#" target="_blank">Begin</a></div>
 	<script type="text/x-jquery-tmpl" id="card-template">
         <img src="${card.imageUrl}"/>
     </script>

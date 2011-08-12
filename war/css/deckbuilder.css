@@ -31,3 +31,5 @@ a.card-name:link,a.card-name:hover,a.card-name:visited{
 .card-count{
 	width:40px;
 }
+
+#game-ready{display:none;}

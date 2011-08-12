@@ -78,8 +78,13 @@
 		//start a new game
 		$("#start-game").click(function(){
 			$.post("/rest/game", function(result){
-				console.log(JSON.parse(result));
+				console.log(result);//JSON.parse(result));
+				$("#game-ready a").attr("href","/game/" + result.id);
+				$("#game-ready").dialog("open");
 			});
+			//while waiting for response, create the dialog box
+			$("#game-ready").dialog({autoOpen:false});
+			return false;
 		});
 	});
 })(jQuery);

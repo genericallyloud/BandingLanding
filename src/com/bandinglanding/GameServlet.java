@@ -35,8 +35,40 @@ public class GameServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		UserService userService = UserServiceFactory.getUserService();
-		String path = request.getPathInfo();
-		response.setContentType("text/html");
-        response.getWriter().println("<html><head></head><body>path: " + path + "</body></html>");
+		String thisURL = request.getRequestURI();
+		if (request.getUserPrincipal() != null) {
+        	User currUser = userService.getCurrentUser();
+        	if(UserWhitelist.isListed(currUser)){
+        		//get the game id so I can make a json request
+        		String gameIdString = request.getPathInfo().substring(1);//remove leading /
+        		int gameId = Integer.parseInt(gameIdString);
+        		
+        		
+        		request.setAttribute("gameId", gameId);
+        		
+        		//grab the user's deck
+//            	Deck deck = new DeckDao().findOrCreateDefaultByOwner(currUser);
+//            	DeckDto deckDto = new DeckDto(deck);
+//        		request.setAttribute("deckDtoJson", deckDto);
+        		try {
+            		String destination = "/WEB-INF/pages/game.jsp";
+        			request.getRequestDispatcher(destination).forward(request, response);
+				} catch (ServletException e) {
+					e.printStackTrace();
+				}
+        	}else{
+                response.setContentType("text/html");
+                response.getWriter().println("<p>Hello, " +
+                        request.getUserPrincipal().getName() +
+                        "!  You are not in the club! You can <a href=\"" +
+                        userService.createLogoutURL(thisURL) +
+                        "\">sign out</a> to try as someone else.</p>");
+        	}
+        } else {
+            response.setContentType("text/html");
+            response.getWriter().println("<p>You need to <a href=\"" +
+                    userService.createLoginURL(thisURL) +
+                    "\">sign in</a> to access the game.</p>");
+        }
 	}
 }
