@@ -4,6 +4,9 @@
  
   <head> 
     <title>The Banding Landing</title>
+    <meta name = "viewport" content = "initial-scale = 1.0,width = device-width, user-scalable = no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <link href="/css/game.css" media="all" rel="stylesheet" type="text/css"/>
   </head> 
  
