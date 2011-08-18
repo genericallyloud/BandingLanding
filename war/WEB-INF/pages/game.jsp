@@ -64,7 +64,16 @@
 			<div class="area-controls"></div>
 		</div>
 	</div>
-    <script src="/js/jquery-1.6.2.min.js"></script>
+	
+	<script type="text/x-handlebars">
+    	{{#view App.MyView}}
+      		<h1>Hello world!</h1>
+    	{{/view}}
+  	</script>
+	
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+	<script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.6.2.min.js"%3E%3C/script%3E'))</script>
+	<script src="/js/libs/sproutcore-2.0.beta.3.min.js"></script>
     <script src="/js/game.js"></script>
   </body> 
  
