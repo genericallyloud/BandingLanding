@@ -25,6 +25,9 @@ img{padding:0;margin:0;}
 	padding:5px;
 	width:50px;
 	background-color:rgba(0,0,0,.3);
+	-webkit-box-pack:justify;
+	display:-webkit-box;
+	-webkit-box-orient:vertical;
 }
 .play-zone{
 	-webkit-box-flex:1;
